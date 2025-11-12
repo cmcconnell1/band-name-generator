@@ -52,6 +52,9 @@ uv run python -m band_name_generator --random -n 10
 
 # Test random mode with timeout (useful for testing)
 timeout 12 uv run python -m band_name_generator --random --interval 2 -n 3
+
+# Enable verbose mode to see word source debug info
+uv run python -m band_name_generator -v -n 5
 ```
 
 ## Available Patterns
@@ -177,6 +180,32 @@ $ timeout 105 uv run python -m band_name_generator --random --interval 5 -n 20
 - Formula: `timeout_seconds >= (count × interval) + buffer`
 - Example: 20 names × 5 seconds = 100 seconds minimum (use 105-120 for safety)
 - Example: 3 names × 2 seconds = 6 seconds minimum (use 12 for safety)
+
+## Verbose/Debug Mode
+
+Use the `-v` or `--verbose` flag to see debug information about word fetching:
+
+```bash
+# Enable verbose mode to see word source details
+$ uv run python -m band_name_generator -v -n 2
+
+[DEBUG] WordFetcher initialized
+[DEBUG] Built-in word lists: 32 adjectives, 48 nouns, 13 verbs, 16 colors, 12 metals
+[DEBUG] Category methods (get_adjective, get_noun, etc.) use built-in lists
+[DEBUG] get_words() method can fetch from remote source: https://www.mit.edu/~ecprice/wordlist.10000
+
+Generated 2 band names:
+  1. Bronze Root
+  2. Electric Heavy Storm
+```
+
+**What verbose mode shows:**
+- Built-in word list sizes (adjectives, nouns, verbs, colors, metals)
+- Which word sources are being used
+- Remote fetch attempts and results (if using `get_words()` method)
+- Fallback behavior when remote fetching fails
+
+**Note:** The band name generator currently uses built-in curated word lists for all patterns. Remote word fetching is available via the `get_words()` API method but not currently used by the pattern generators.
 
 ## Documentation
 

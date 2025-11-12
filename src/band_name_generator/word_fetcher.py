@@ -1,6 +1,7 @@
 """Utilities for fetching random words from various sources."""
 
 import random
+import sys
 
 try:
     import requests
@@ -162,16 +163,38 @@ class WordFetcher:
     Attributes:
         _cached_words: Optional cache of words fetched from online source.
                       Initialized as None and populated on first use.
+        verbose: If True, prints debug information about word fetching.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, verbose: bool = False) -> None:
         """
         Initialize the word fetcher.
 
         Sets up an empty cache for words fetched from online sources.
         The cache will be populated lazily on first use if use_cache=True.
+
+        Args:
+            verbose: If True, prints debug information about word fetching.
         """
         self._cached_words: list[str] | None = None
+        self.verbose = verbose
+
+        if self.verbose:
+            print("[DEBUG] WordFetcher initialized", file=sys.stderr)
+            print(
+                f"[DEBUG] Built-in word lists: {len(ADJECTIVES)} adjectives, "
+                f"{len(NOUNS)} nouns, {len(VERBS)} verbs, "
+                f"{len(COLORS)} colors, {len(METALS)} metals",
+                file=sys.stderr,
+            )
+            print(
+                "[DEBUG] Category methods (get_adjective, get_noun, etc.) use built-in lists",
+                file=sys.stderr,
+            )
+            print(
+                f"[DEBUG] get_words() method can fetch from remote source: {WORD_LIST_URL}",
+                file=sys.stderr,
+            )
 
     def _fetch_word_list(self) -> list[str]:
         """
@@ -190,9 +213,17 @@ class WordFetcher:
         """
         # Check if requests library is available
         if not REQUESTS_AVAILABLE:
+            if self.verbose:
+                print(
+                    "[DEBUG] requests library not available, using fallback words",
+                    file=sys.stderr,
+                )
             return []
 
         try:
+            if self.verbose:
+                print(f"[DEBUG] Fetching word list from {WORD_LIST_URL}...", file=sys.stderr)
+
             # Fetch word list from MIT with 5 second timeout
             response = requests.get(WORD_LIST_URL, timeout=5)
             response.raise_for_status()  # Raise exception for bad status codes
@@ -201,11 +232,25 @@ class WordFetcher:
             words = response.content.decode("utf-8").splitlines()
 
             # Filter words: 4-12 characters, alphabetic only, convert to lowercase
-            return [
+            filtered_words = [
                 word.lower() for word in words if 4 <= len(word.strip()) <= 12 and word.isalpha()
             ]
-        except Exception:
+
+            if self.verbose:
+                print(
+                    f"[DEBUG] Successfully fetched {len(filtered_words)} words from remote source",
+                    file=sys.stderr,
+                )
+
+            return filtered_words
+        except Exception as e:
             # Return empty list on any error (network, timeout, decode, etc.)
+            if self.verbose:
+                print(
+                    f"[DEBUG] Failed to fetch remote word list: {type(e).__name__}: {e}",
+                    file=sys.stderr,
+                )
+                print("[DEBUG] Will use fallback word lists", file=sys.stderr)
             return []
 
     def get_words(self, count: int = 1, use_cache: bool = True) -> list[str]:
@@ -231,6 +276,8 @@ class WordFetcher:
         """
         # Populate cache on first use if caching is enabled
         if use_cache and self._cached_words is None:
+            if self.verbose:
+                print("[DEBUG] Initializing word cache...", file=sys.stderr)
             self._cached_words = self._fetch_word_list()
 
         # Use cached words or fetch fresh ones based on use_cache flag
@@ -238,9 +285,19 @@ class WordFetcher:
 
         # If we successfully got words from online source, use them
         if word_source:
+            if self.verbose and use_cache:
+                print("[DEBUG] Using cached remote words", file=sys.stderr)
+            elif self.verbose:
+                print("[DEBUG] Using fresh remote words", file=sys.stderr)
             return [random.choice(word_source) for _ in range(count)]
 
         # Fallback: combine all built-in word lists and select randomly
+        if self.verbose:
+            print(
+                f"[DEBUG] Using fallback word lists ({len(ADJECTIVES)} adjectives, "
+                f"{len(NOUNS)} nouns, {len(VERBS)} verbs)",
+                file=sys.stderr,
+            )
         all_words = ADJECTIVES + NOUNS + VERBS
         return [random.choice(all_words) for _ in range(count)]
 

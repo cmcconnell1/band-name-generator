@@ -24,14 +24,17 @@ class BandNameGenerator:
         5
     """
 
-    def __init__(self) -> None:
+    def __init__(self, verbose: bool = False) -> None:
         """
         Initialize the band name generator.
 
         Creates a WordFetcher instance that will be used to retrieve
         random words for all name generation methods.
+
+        Args:
+            verbose: If True, enables debug output for word fetching.
         """
-        self.word_fetcher = WordFetcher()
+        self.word_fetcher = WordFetcher(verbose=verbose)
 
     def _capitalize_band_name(self, name: str) -> str:
         """

@@ -110,6 +110,14 @@ Examples:
         help="Seconds between names in random mode (default: 5.0)",
     )
 
+    # Add argument for verbose/debug mode
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Enable verbose debug output (shows word fetching details)",
+    )
+
     # Parse command-line arguments
     args = parser.parse_args()
 
@@ -128,7 +136,7 @@ Examples:
         return 0
 
     # Create the band name generator instance
-    generator = BandNameGenerator()
+    generator = BandNameGenerator(verbose=args.verbose)
 
     # Convert pattern string to enum if specified, otherwise None for random
     pattern: BandNamePattern | None = None
