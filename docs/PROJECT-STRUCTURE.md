@@ -40,8 +40,7 @@ band-name-generator/
 │   ├── PYTHON-BOILERPLATE-INDEX.md  # Quick reference index
 │   └── UV-RUST-STANDARD.md      # Complete uv standard documentation
 │
-├── scripts/                      # Python scripts and setup utilities
-│   ├── band-name-gen.py         # Example: Random word generator
+├── scripts/                      # Setup utilities
 │   ├── setup-python-uv.sh       # Legacy: uv pip-based setup
 │   └── setup-python-uv-modern.sh # Modern: Native uv setup (RECOMMENDED)
 │
@@ -85,10 +84,9 @@ Boilerplate files to copy to new projects:
 - Both modern and legacy approaches
 
 #### 3. Scripts (`scripts/`)
-Setup scripts and utilities:
+Setup scripts for boilerplate templates:
 - **setup-python-uv-modern.sh** - For NEW projects (uses native uv commands)
 - **setup-python-uv.sh** - For EXISTING projects (uses uv pip interface)
-- Example Python scripts
 
 #### 4. Project Files (root)
 - **pyproject.toml** - This project's configuration
