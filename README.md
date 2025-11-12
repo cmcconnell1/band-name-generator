@@ -46,6 +46,12 @@ uv run python -m band_name_generator -p color_adjective_noun_plural -n 5 # Red H
 
 # Generate random names
 uv run python -m band_name_generator -n 10
+
+# Continuous random mode (generates names every 5 seconds)
+uv run python -m band_name_generator --random
+
+# Test random mode with timeout (useful for testing)
+timeout 12 uv run python -m band_name_generator --random --interval 2 -n 3
 ```
 
 **Features:**
@@ -274,31 +280,81 @@ Generated 5 band names:
 
 # See all 10 available patterns
 $ uv run python -m band_name_generator -l
+
+# Continuous random mode with 5-second pauses (Ctrl+C to stop)
+$ uv run python -m band_name_generator --random
+
+Random Band Name Generator
+Generating names continuously with 5.0s intervals [Press Ctrl+C to stop]
+
+Generated band name:
+  Iron Thunder
+
+[5 second pause]
+
+Generated band name:
+  The Wild Warriors
+
+[5 second pause]
+
+Generated band name:
+  Red Hot Chili Peppers
+
+[continues until Ctrl+C]
+
+# Random mode with custom interval (2 seconds)
+$ uv run python -m band_name_generator --random --interval 2
+
+# Generate 10 random names with 5-second pauses then stop
+$ uv run python -m band_name_generator --random -n 10
+
+Random Band Name Generator
+Generating 10 names with 5.0s intervals [Press Ctrl+C to stop]
+
+Generated band name:
+  Steel Dragon
+
+[5 second pause]
+
+Generated band name:
+  The Rolling Stones
+
+[5 second pause]
+...
+Generated 10 names. Exiting.
+
+# Test random mode with timeout command
+# Note: timeout value must accommodate (count × interval) seconds
+# Example: 3 names × 2 seconds = 6 seconds minimum (use 12 for buffer)
+$ timeout 12 uv run python -m band_name_generator --random --interval 2 -n 3
+
+Random Band Name Generator
+Generating 3 names with 2.0s intervals [Press Ctrl+C to stop]
+
+Generated band name:
+  Rusty Savage Desert
+
+Generated band name:
+  The Wild Warriors
+
+Generated band name:
+  Burning Rain
+
+Generated 3 names. Exiting.
+
+# For 20 names with 5-second intervals, need 100+ seconds
+# (20 names × 5 seconds = 100 seconds minimum)
+$ timeout 105 uv run python -m band_name_generator --random --interval 5 -n 20
 ```
+
+**Timeout Calculation Guide:**
+- Formula: `timeout_seconds >= (count × interval) + buffer`
+- Example: 20 names × 5 seconds = 100 seconds minimum (use 105-120 for safety)
+- Example: 3 names × 2 seconds = 6 seconds minimum (use 12 for safety)
 
 For complete documentation with all pattern examples, see [BAND-NAME-GENERATOR.md](docs/BAND-NAME-GENERATOR.md).
 
-### Create a New FastAPI Project
-
-```bash
-mkdir my-api && cd my-api
-cp /path/to/band-name-generator/scripts/setup-python-uv-modern.sh .
-./setup-python-uv-modern.sh
-
-uv add fastapi uvicorn
-uv run uvicorn main:app --reload
-```
-
-### Convert Existing pip Project
-
-```bash
-cd existing-project
-cp /path/to/band-name-generator/scripts/setup-python-uv.sh .
-./setup-python-uv.sh
-
-# Migrate dependencies to pyproject.toml
-# Then use: uv pip sync requirements.txt
-```
+For examples of using the included boilerplate templates for other Python projects, see [UV-RUST-STANDARD.md](docs/UV-RUST-STANDARD.md).
 
 ## Standards and Rules
 

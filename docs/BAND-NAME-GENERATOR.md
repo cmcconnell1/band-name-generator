@@ -38,6 +38,18 @@ uv run python -m band_name_generator -p metal_noun -n 5
 
 # List all available patterns
 uv run python -m band_name_generator -l
+
+# Random continuous mode (generates names every 5 seconds)
+uv run python -m band_name_generator --random
+
+# Random mode with custom interval (3 seconds)
+uv run python -m band_name_generator --random --interval 3
+
+# Generate 10 names in random mode then stop
+uv run python -m band_name_generator --random -n 10
+
+# Test random mode with timeout (useful for testing)
+timeout 12 uv run python -m band_name_generator --random --interval 2 -n 3
 ```
 
 ### Python API
@@ -269,8 +281,8 @@ Generate names using random patterns (the default behavior):
 # Single random name
 $ uv run python -m band_name_generator
 
-Generated 1 band name:
-  1. Iron Thunder
+Generated band name:
+  Iron Thunder
 
 # Multiple random names with mixed patterns
 $ uv run python -m band_name_generator -n 15
@@ -291,6 +303,69 @@ Generated 15 band names:
   13. Freezing Wolf
   14. Ice Queen
   15. Maiden Forest
+```
+
+### Continuous Random Mode
+
+Generate names continuously with automatic pauses (perfect for brainstorming):
+
+```bash
+# Infinite random mode (press Ctrl+C to stop)
+$ uv run python -m band_name_generator --random
+
+Random Band Name Generator
+Generating names continuously with 5.0s intervals [Press Ctrl+C to stop]
+
+Generated band name:
+  Azure Dark River Winds
+
+[5 second pause]
+
+Generated band name:
+  Iron Maiden
+
+[5 second pause]
+
+Generated band name:
+  The Rolling Stones
+
+[continues until Ctrl+C]
+
+# Custom interval (3 seconds between names)
+$ uv run python -m band_name_generator --random --interval 3
+
+# Generate 10 names then stop
+$ uv run python -m band_name_generator --random -n 10
+
+Random Band Name Generator
+Generating 10 names with 5.0s intervals [Press Ctrl+C to stop]
+
+Generated band name:
+  Silver Clean Machine Machines
+
+[5 second pause]
+...
+Generated 10 names. Exiting.
+
+# Use specific pattern in random mode
+$ uv run python -m band_name_generator --random -p color_adjective_noun_plural --interval 2
+
+# Test with timeout command (useful for testing)
+$ timeout 12 uv run python -m band_name_generator --random --interval 2 -n 3
+
+Random Band Name Generator
+Generating 3 names with 2.0s intervals [Press Ctrl+C to stop]
+
+Generated band name:
+  Rusty Savage Desert
+
+Generated band name:
+  The Wild Warriors
+
+Generated band name:
+  Burning Rain
+
+Generated 3 names. Exiting.
 ```
 
 ## Project Structure

@@ -336,6 +336,76 @@ uv run pytest
 # To: uv run python script.py
 ```
 
+## Using Boilerplate Templates from band-name-generator
+
+This repository includes production-ready templates for Python projects. Here's how to use them:
+
+### Create a New FastAPI Project
+
+```bash
+# 1. Create project directory
+mkdir my-api && cd my-api
+
+# 2. Copy modern setup script
+cp /path/to/band-name-generator/scripts/setup-python-uv-modern.sh .
+
+# 3. Run setup
+./setup-python-uv-modern.sh
+
+# 4. Add FastAPI dependencies
+uv add fastapi uvicorn
+
+# 5. Create main.py
+cat > src/my_api/main.py << 'EOF'
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+def read_root():
+    return {"message": "Hello World"}
+EOF
+
+# 6. Run the API
+uv run uvicorn my_api.main:app --reload
+```
+
+### Convert Existing pip Project to uv
+
+```bash
+# 1. Navigate to existing project
+cd existing-project
+
+# 2. Copy legacy setup script
+cp /path/to/band-name-generator/scripts/setup-python-uv.sh .
+
+# 3. Run setup (creates .venv and installs from requirements.txt)
+./setup-python-uv.sh
+
+# 4. Migrate to modern uv (optional but recommended)
+# Convert requirements.txt entries to pyproject.toml dependencies
+# Then use: uv sync
+
+# 5. Test your project
+source .venv/bin/activate
+pytest
+```
+
+### Copy Templates Directly
+
+```bash
+# Copy Makefile
+cp /path/to/band-name-generator/templates/Makefile.modern.template ./Makefile
+
+# Copy pyproject.toml
+cp /path/to/band-name-generator/templates/pyproject.toml.template ./pyproject.toml
+
+# Copy .gitignore
+cp /path/to/band-name-generator/templates/.gitignore.python.template ./.gitignore
+
+# Edit files to match your project name
+```
+
 ### Daily Development Workflow
 
 ```bash
