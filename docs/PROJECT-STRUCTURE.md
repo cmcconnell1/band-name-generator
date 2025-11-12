@@ -42,7 +42,6 @@ band-name-generator/
 │
 ├── scripts/                      # Python scripts and setup utilities
 │   ├── band-name-gen.py         # Example: Random word generator
-│   ├── setup-ev.sh              # Deprecated: Old setup script
 │   ├── setup-python-uv.sh       # Legacy: uv pip-based setup
 │   └── setup-python-uv-modern.sh # Modern: Native uv setup (RECOMMENDED)
 │

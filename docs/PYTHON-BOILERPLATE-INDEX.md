@@ -49,7 +49,6 @@ uv lock --upgrade           # Update dependencies
 |------|---------|-------------|
 | `setup-python-uv-modern.sh` | Modern setup using native uv commands | NEW projects (preferred) |
 | `setup-python-uv.sh` | Legacy setup using uv pip interface | EXISTING projects |
-| `setup-ev.sh` | Old setup script (deprecated) | DO NOT USE |
 
 ### Makefile Templates
 
