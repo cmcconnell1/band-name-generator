@@ -70,7 +70,10 @@ Examples:
         "--count",
         type=int,
         default=None,
-        help="Number of band names to generate (default: 1 for normal mode, infinite for --random mode)",
+        help=(
+            "Number of band names to generate "
+            "(default: 1 for normal mode, infinite for --random mode)"
+        ),
     )
 
     # Add argument for specifying a pattern
@@ -115,13 +118,13 @@ Examples:
         print("Available patterns:")
         print("\nTwo-word patterns:")
         # Display two-word patterns (e.g., adjective_noun, metal_noun)
-        for pattern in BandNamePattern.two_word_patterns():
-            print(f"  - {pattern.value}")
+        for p in BandNamePattern.two_word_patterns():
+            print(f"  - {p.value}")
         print("\nMulti-word patterns:")
         # Display multi-word patterns not already shown in two-word section
-        for pattern in BandNamePattern.multi_word_patterns():
-            if pattern not in BandNamePattern.two_word_patterns():
-                print(f"  - {pattern.value}")
+        for p in BandNamePattern.multi_word_patterns():
+            if p not in BandNamePattern.two_word_patterns():
+                print(f"  - {p.value}")
         return 0
 
     # Create the band name generator instance
@@ -181,8 +184,9 @@ def run_random_mode(
     Returns:
         Exit code (0 for success, 1 for error)
     """
+
     # Set up signal handler for graceful Ctrl+C exit
-    def signal_handler(sig, frame):
+    def signal_handler(sig: int, frame: object) -> None:
         print("\n\nRandom mode stopped by user.")
         sys.exit(0)
 

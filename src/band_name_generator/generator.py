@@ -332,8 +332,12 @@ class BandNameGenerator:
             BandNamePattern.THE_ADJECTIVE_NOUN: self.generate_the_adjective_noun,
             BandNamePattern.ADJECTIVE_ADJECTIVE_NOUN: self.generate_adjective_adjective_noun,
             BandNamePattern.ADJECTIVE_NOUN_PLURAL: self.generate_adjective_noun_plural,
-            BandNamePattern.ADJECTIVE_ADJECTIVE_NOUN_PLURAL: self.generate_adjective_adjective_noun_plural,
-            BandNamePattern.COLOR_ADJECTIVE_NOUN_PLURAL: self.generate_color_adjective_noun_plural,
+            BandNamePattern.ADJECTIVE_ADJECTIVE_NOUN_PLURAL: (
+                self.generate_adjective_adjective_noun_plural
+            ),
+            BandNamePattern.COLOR_ADJECTIVE_NOUN_PLURAL: (
+                self.generate_color_adjective_noun_plural
+            ),
         }
 
         # Look up the generator function for this pattern

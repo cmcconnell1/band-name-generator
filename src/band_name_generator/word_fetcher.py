@@ -202,9 +202,7 @@ class WordFetcher:
 
             # Filter words: 4-12 characters, alphabetic only, convert to lowercase
             return [
-                word.lower()
-                for word in words
-                if 4 <= len(word.strip()) <= 12 and word.isalpha()
+                word.lower() for word in words if 4 <= len(word.strip()) <= 12 and word.isalpha()
             ]
         except Exception:
             # Return empty list on any error (network, timeout, decode, etc.)

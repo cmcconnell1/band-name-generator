@@ -63,7 +63,9 @@ class BandNamePattern(Enum):
     ADJECTIVE_NOUN_PLURAL = "adjective_noun_plural"  # Silent Storms (2 words)
 
     # Four-word patterns
-    ADJECTIVE_ADJECTIVE_NOUN_PLURAL = "adjective_adjective_noun_plural"  # Deep Purple Mystic Dragons
+    ADJECTIVE_ADJECTIVE_NOUN_PLURAL = (
+        "adjective_adjective_noun_plural"  # Deep Purple Mystic Dragons
+    )
     COLOR_ADJECTIVE_NOUN_PLURAL = "color_adjective_noun_plural"  # Red Hot Chili Peppers
 
     # Compound/portmanteau patterns (not yet implemented)
@@ -71,7 +73,7 @@ class BandNamePattern(Enum):
     SINGLE_WORD = "single_word"  # Metallica, Radiohead
 
     @classmethod
-    def multi_word_patterns(cls) -> list["BandNamePattern"]:
+    def multi_word_patterns(cls) -> list[BandNamePattern]:
         """Get all patterns that generate multi-word band names.
 
         Returns all currently implemented patterns that produce band names
@@ -103,7 +105,7 @@ class BandNamePattern(Enum):
         ]
 
     @classmethod
-    def two_word_patterns(cls) -> list["BandNamePattern"]:
+    def two_word_patterns(cls) -> list[BandNamePattern]:
         """Get patterns that generate exactly two-word band names.
 
         Returns only the patterns that produce names with exactly two words.
