@@ -1,0 +1,141 @@
+# Modern Python Project Makefile
+# Uses Rust-based uv with native commands (uv add, uv sync, uv run)
+#
+# CRITICAL: NO VENV ACTIVATION NEEDED!
+# All commands use 'uv run' - the modern way to work with Python
+
+.PHONY: help install update clean test coverage lint format type-check pre-commit run dev lock
+
+# Default target
+help:
+	@echo "Modern Python Project Development Commands (using Rust-based uv)"
+	@echo ""
+	@echo "IMPORTANT: NO VENV ACTIVATION NEEDED!"
+	@echo "All commands use 'uv run' automatically"
+	@echo ""
+	@echo "Setup and Dependencies:"
+	@echo "  make install       - Sync all dependencies (uv sync)"
+	@echo "  make update        - Update all dependencies to latest versions"
+	@echo "  make lock          - Update lockfile without installing"
+	@echo "  make add PKG=name  - Add a new dependency"
+	@echo "  make add-dev PKG=name - Add a new dev dependency"
+	@echo ""
+	@echo "Code Quality:"
+	@echo "  make format        - Format code with ruff"
+	@echo "  make lint          - Lint code with ruff"
+	@echo "  make type-check    - Run type checking with mypy"
+	@echo "  make pre-commit    - Run all pre-commit hooks"
+	@echo ""
+	@echo "Testing:"
+	@echo "  make test          - Run tests with pytest"
+	@echo "  make coverage      - Run tests with coverage report"
+	@echo ""
+	@echo "Running:"
+	@echo "  make run           - Run the application"
+	@echo "  make dev           - Run in development mode with auto-reload"
+	@echo ""
+	@echo "Cleanup:"
+	@echo "  make clean         - Remove build artifacts and cache files"
+	@echo ""
+	@echo "All-in-one:"
+	@echo "  make check         - Run all checks (format, lint, type-check, test)"
+
+# Installation and dependency management
+install:
+	@echo "[INFO] Syncing dependencies with uv..."
+	uv sync
+
+update:
+	@echo "[INFO] Updating dependencies to latest versions..."
+	uv lock --upgrade
+	uv sync
+
+lock:
+	@echo "[INFO] Updating lockfile..."
+	uv lock
+
+add:
+ifndef PKG
+	@echo "[ERROR] Usage: make add PKG=package-name"
+	@exit 1
+endif
+	@echo "[INFO] Adding dependency: $(PKG)"
+	uv add $(PKG)
+
+add-dev:
+ifndef PKG
+	@echo "[ERROR] Usage: make add-dev PKG=package-name"
+	@exit 1
+endif
+	@echo "[INFO] Adding dev dependency: $(PKG)"
+	uv add --dev $(PKG)
+
+# Code quality targets
+format:
+	@echo "[INFO] Formatting code with ruff..."
+	uv run ruff format .
+
+lint:
+	@echo "[INFO] Linting code with ruff..."
+	uv run ruff check . --fix
+
+type-check:
+	@echo "[INFO] Running type checks with mypy..."
+	uv run mypy .
+
+pre-commit:
+	@echo "[INFO] Running pre-commit hooks..."
+	uv run pre-commit run --all-files
+
+# Testing targets
+test:
+	@echo "[INFO] Running tests..."
+	uv run pytest
+
+coverage:
+	@echo "[INFO] Running tests with coverage..."
+	uv run pytest --cov --cov-report=html --cov-report=term-missing
+
+# Running targets (customize for your project)
+run:
+	@echo "[INFO] Running application..."
+	uv run python -m src.your_package
+
+dev:
+	@echo "[INFO] Running in development mode..."
+	uv run python -m src.your_package --reload
+
+# Cleanup targets
+clean:
+	@echo "[INFO] Cleaning up build artifacts..."
+	rm -rf build/
+	rm -rf dist/
+	rm -rf .eggs/
+	rm -rf *.egg-info
+	rm -rf .pytest_cache
+	rm -rf .coverage
+	rm -rf htmlcov/
+	rm -rf .mypy_cache
+	rm -rf .ruff_cache
+	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+	find . -type f -name '*.pyc' -delete
+	find . -type f -name '*.pyo' -delete
+	find . -type f -name '*~' -delete
+
+# Combined check target
+check: format lint type-check test
+	@echo "[SUCCESS] All checks passed!"
+
+# Development setup (complete environment setup)
+setup: install
+	@echo "[INFO] Setting up pre-commit hooks..."
+	uv run pre-commit install
+	@echo "[SUCCESS] Development environment ready!"
+
+# Show project info
+info:
+	@echo "Project Information:"
+	@echo "  uv version: $$(uv --version)"
+	@echo "  Python version: $$(uv run python --version)"
+	@echo ""
+	@uv tree
