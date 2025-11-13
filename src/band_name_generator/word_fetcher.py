@@ -76,6 +76,7 @@ NOUNS = [
     "sword",
     "shield",
     "wolf",
+    "dog",
     "bear",
     "tiger",
     "eagle",
@@ -118,6 +119,7 @@ COLORS = [
     "amber",
     "violet",
     "indigo",
+    "rainbow",
 ]
 
 METALS = [
@@ -133,6 +135,8 @@ METALS = [
     "aluminum",
     "zinc",
     "tin",
+    "tinfoil",
+    "lead",
 ]
 
 VERBS = [
@@ -149,6 +153,9 @@ VERBS = [
     "freezing",
     "spinning",
     "rolling",
+    "swimming",
+    "shooting",
+    "sleeping",
 ]
 
 
